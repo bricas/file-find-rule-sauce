@@ -9,11 +9,11 @@ my $dir = 't/data';
 my @expected_1 = ( );
 
 my @expected_2 = (
-	"$dir/test.dat"
+    "$dir/test.dat"
 );
 
 my @expected_3 = (
-	"$dir/test_no_comments.dat"
+    "$dir/test_no_comments.dat"
 );
 
 my @files;

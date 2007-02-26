@@ -7,13 +7,13 @@ BEGIN {
 my $dir = 't/data';
 
 my @expected_no  = (
-	"$dir/bogus.dat",
-	"$dir/bogus_long.dat"
+    "$dir/bogus.dat",
+    "$dir/bogus_long.dat"
 );
 
 my @expected_yes = (
-	"$dir/test.dat",
-	"$dir/test_no_comments.dat"
+    "$dir/test.dat",
+    "$dir/test_no_comments.dat"
 );
 
 @expected_no  = sort @expected_no;

@@ -6,13 +6,13 @@ File::Find::Rule::SAUCE - Rule to match on title, author, etc from a file's SAUC
 
 =head1 SYNOPSIS
 
-	use File::Find::Rule::SAUCE;
+    use File::Find::Rule::SAUCE;
 
-	# get all files where 'Brian' is the author
-	my @files = find( sauce => { author => qr/Brian/ }, in => '/ansi' );
+    # get all files where 'Brian' is the author
+    my @files = find( sauce => { author => qr/Brian/ }, in => '/ansi' );
 
-	# get all files without a SAUCE rec
-	@files    = find( sauce => { has_sauce => 0 }, in => '/ansi' );
+    # get all files without a SAUCE rec
+    @files    = find( sauce => { has_sauce => 0 }, in => '/ansi' );
 
 
 =head1 DESCRIPTION
@@ -30,7 +30,7 @@ use base qw( File::Find::Rule );
 use vars qw( @EXPORT $VERSION );
 
 @EXPORT  = @File::Find::Rule::EXPORT;
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 use File::SAUCE;
 
@@ -38,7 +38,7 @@ use File::SAUCE;
 
 =head2 sauce( %options )
 
-	my @files = find( sauce => { title => qr/My Ansi/ }, in => '/ansi' );
+    my @files = find( sauce => { title => qr/My Ansi/ }, in => '/ansi' );
 
 If more than one field is specified, it will only return the file if ALL of the criteria
 are met. You can specify a regex (qr//) or just a string.
@@ -53,63 +53,63 @@ See File::SAUCE for a list of all the fields that can be matched.
 =cut
 
 sub File::Find::Rule::sauce {
-	my $self = shift()->_force_object;
+    my $self = shift()->_force_object;
 
-	# Procedural interface allows passing arguments as a hashref.
-	my %criteria = UNIVERSAL::isa( $_[ 0 ], 'HASH' ) ? %{ $_[ 0 ] } : @_;
+    # Procedural interface allows passing arguments as a hashref.
+    my %criteria = UNIVERSAL::isa( $_[ 0 ], 'HASH' ) ? %{ $_[ 0 ] } : @_;
 
-	$self->exec( sub {
-		my $file = shift;
+    $self->exec( sub {
+        my $file = shift;
 
-		return if -d $file;
+        return if -d $file;
 
-		my $info = File::SAUCE->new( file => $file );
+        my $info = File::SAUCE->new( file => $file );
 
-		# deal with files (not) having SAUCE records first
-		if( exists $criteria{ has_sauce } ) {
-			return 0 unless $info->has_sauce == $criteria{ has_sauce };
-		}
-		# if has_sauce was not specified, there's no point in continuing
-		# when the file has no SAUCE record
-		elsif( $info->has_sauce == 0 ) {
-			return 0;
-		}
+        # deal with files (not) having SAUCE records first
+        if( exists $criteria{ has_sauce } ) {
+            return 0 unless $info->has_sauce == $criteria{ has_sauce };
+        }
+        # if has_sauce was not specified, there's no point in continuing
+        # when the file has no SAUCE record
+        elsif( $info->has_sauce == 0 ) {
+            return 0;
+        }
 
-		# passed has_sauce - check the other criteria
-		for my $field ( keys %criteria ) {
-			$field = lc( $field );
-			next if $field eq 'has_sauce';
+        # passed has_sauce - check the other criteria
+        for my $field ( keys %criteria ) {
+            $field = lc( $field );
+            next if $field eq 'has_sauce';
 
-			if ( $field eq 'comments' ) {
+            if ( $field eq 'comments' ) {
 
-				my $comments = $info->comments;
+                my $comments = $info->comments;
 
-				if ( ref $criteria{ $field } eq 'Regexp' ) {
-					if ( scalar @$comments > 0 ) {
-						return unless grep( $_ =~ $criteria{ $field }, @{ $comments } );
-					}
-					else {
-						return unless '' =~ $criteria{ $field };
-					}
-				}
-				else {
-					if ( scalar @$comments > 0 ) {
-						return unless grep( $_ eq $criteria{ $field }, @{ $comments } );
-					}
-					else {
-						return unless $criteria{ $field } eq '';
-					}
-				}	
-			}
-			elsif ( ref $criteria{ $field } eq 'Regexp' ) {
-				return unless $info->$field =~ $criteria{ $field };
-			}
-			else {
-				return unless $info->$field eq $criteria{ $field };
-			}
-		}
-		return 1;
-	} );
+                if ( ref $criteria{ $field } eq 'Regexp' ) {
+                    if ( scalar @$comments > 0 ) {
+                        return unless grep( $_ =~ $criteria{ $field }, @{ $comments } );
+                    }
+                    else {
+                        return unless '' =~ $criteria{ $field };
+                    }
+                }
+                else {
+                    if ( scalar @$comments > 0 ) {
+                        return unless grep( $_ eq $criteria{ $field }, @{ $comments } );
+                    }
+                    else {
+                        return unless $criteria{ $field } eq '';
+                    }
+                }    
+            }
+            elsif ( ref $criteria{ $field } eq 'Regexp' ) {
+                return unless $info->$field =~ $criteria{ $field };
+            }
+            else {
+                return unless $info->$field eq $criteria{ $field };
+            }
+        }
+        return 1;
+    } );
 }
 
 =head1 AUTHOR
@@ -122,7 +122,7 @@ sub File::Find::Rule::sauce {
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2005 by Brian Cassidy
+Copyright 2007 by Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 

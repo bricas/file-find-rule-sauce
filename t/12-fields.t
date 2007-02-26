@@ -7,27 +7,27 @@ BEGIN {
 my $dir = 't/data';
 
 my @expected = (
-	"$dir/test.dat"
+    "$dir/test.dat"
 );
 
 my %fields_1 = (
-	author => 'Test Author'
+    author => 'Test Author'
 );
 
 my %fields_2 = (
-	author => qr/Test/
+    author => qr/Test/
 );
 
 my %fields_3 = (
-	author => 'Test Author',
-	group  => 'Test Group',
-	title  => 'Test Title'
+    author => 'Test Author',
+    group  => 'Test Group',
+    title  => 'Test Title'
 );
 
 my %fields_4 = (
-	author => qr/Test/,
-	group  => qr/Test/,
-	title  => qr/Test/
+    author => qr/Test/,
+    group  => qr/Test/,
+    title  => qr/Test/
 );
 
 my @files;
